@@ -6,7 +6,7 @@ import cors from "cors";
 
 import { startBrowser, saveSession, runTasks } from "./src/tiktokActions.js";
 import { launchBrowser } from "./src/playwright.js";
-import { monitorQueue, uploadQueue, addMonitorVideo, addUploadVideo } from "./src/config.js";
+import { monitorQueue, uploadQueue, addMonitor, addUpload } from "./src/config.js"; //  corrected
 
 const SESSION_FILE = "./storage/session.json";
 const app = express();
@@ -52,7 +52,7 @@ app.post("/monitor", async (req, res) => {
     const { videoUrl } = req.body;
     if (!videoUrl) return res.status(400).json({ error: "videoUrl is required" });
 
-    addMonitorVideo(videoUrl);
+    addMonitor(videoUrl); //  updated
     res.json({ success: true, message: "Video added to monitor queue", videoUrl });
   } catch (err) {
     console.error("Error in /monitor:", err);
@@ -65,7 +65,7 @@ app.post("/upload", async (req, res) => {
     const { videoPath, caption } = req.body;
     if (!videoPath) return res.status(400).json({ error: "videoPath is required" });
 
-    addUploadVideo(videoPath, caption || "");
+    addUpload(videoPath, caption || ""); //  updated
     res.json({ success: true, message: "Video added to upload queue", videoPath });
   } catch (err) {
     console.error("Error in /upload:", err);
@@ -87,7 +87,6 @@ async function runBotLoop() {
   isRunning = true;
 
   try {
-    // Launch browser with session if not already opened
     if (!page || !context) {
       if (!fs.existsSync(SESSION_FILE)) {
         log("No session found. Please visit /login to login first.");
@@ -112,7 +111,6 @@ async function runBotLoop() {
         console.error("Error in task loop:", taskErr);
       }
 
-      // Dynamic delay: 30-35s random to avoid detection
       await new Promise((r) => setTimeout(r, 30000 + Math.random() * 5000));
     }
   } catch (err) {
