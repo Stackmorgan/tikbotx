@@ -1,7 +1,7 @@
 // aiReply.js
 import fetch from "node-fetch";
 
-export async function generateReply(inputText) {
+async function generateReply(inputText) {
   try {
     const response = await fetch(
       "https://huggingface.co/api-inference/v1/models/facebook/blenderbot-400M-distill",
@@ -28,3 +28,5 @@ export async function generateReply(inputText) {
     return "Oops, something went wrong while generating the reply.";
   }
 }
+
+export default generateReply;  // ✅ Default export
