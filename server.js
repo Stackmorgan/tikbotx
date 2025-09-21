@@ -138,7 +138,7 @@ process.on("SIGINT", shutdown);
 process.on("SIGTERM", shutdown);
 
 // ---------------- START SERVER ----------------
-const PORT = process.env.PORT || 4000;
+const PORT = process.env.PORT || 3000;
 app.listen(PORT, async () => {
   log(`Bot server running on http://localhost:${PORT}`);
   log(`Public login page: http://localhost:${PORT}/login`);
